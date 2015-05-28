@@ -26,7 +26,13 @@ namespace KrileMediaPlayer
 
             this.StartupArgs = startupargs;
 
-            Console.WriteLine(startupargs[0]);
+            showag();
+        }
+
+        private void showag()
+        {
+            media.Source = new BitmapImage(new Uri(StartupArgs[0]));
+            this.Title = StartupArgs[0];
         }
 
         public string[] StartupArgs { get; set; }
