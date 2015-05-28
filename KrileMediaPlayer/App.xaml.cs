@@ -13,5 +13,13 @@ namespace KrileMediaPlayer
     /// </summary>
     public partial class App : Application
     {
+        public MainWindow mwindow;
+
+        private void SummerSunCelebration(object sender, StartupEventArgs e)
+        {
+            mwindow = new MainWindow(e.Args);
+
+            mwindow.Show();
+        }
     }
 }

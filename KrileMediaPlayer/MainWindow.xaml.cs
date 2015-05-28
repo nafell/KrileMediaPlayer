@@ -20,9 +20,15 @@ namespace KrileMediaPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(string[] startupargs)
         {
             InitializeComponent();
+
+            this.StartupArgs = startupargs;
+
+            Console.WriteLine(startupargs[0]);
         }
+
+        public string[] StartupArgs { get; set; }
     }
 }
