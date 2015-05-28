@@ -33,6 +33,7 @@ namespace KrileMediaPlayer
         {
             media.Source = new BitmapImage(new Uri(StartupArgs[0]));
             this.Title = StartupArgs[0];
+
         }
 
         public string[] StartupArgs { get; set; }
