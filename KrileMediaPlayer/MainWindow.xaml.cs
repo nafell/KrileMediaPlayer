@@ -39,5 +39,13 @@ namespace KrileMediaPlayer
         }
 
         public string StartupArgs { get; set; }
+
+        private void img_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                Application.Current.Shutdown();
+            }
+        }
     }
 }

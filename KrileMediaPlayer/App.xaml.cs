@@ -19,7 +19,7 @@ namespace KrileMediaPlayer
 
         private void SummerSunCelebration(object sender, StartupEventArgs e)
         {
-            if (e.Args.Length == 0) return;
+            if (e.Args.Length == 0) Application.Current.Shutdown();
             string URL;
             if (WinterWrapUp(e.Args[0], out URL) == true)
             {
@@ -43,10 +43,10 @@ namespace KrileMediaPlayer
             if (Regex.IsMatch(url, @"http://gyazo\.com/.+")) //gyazoを画像直リンクしないcunt向け
                 { URL = Regex.Replace(url, @"http://gyazo\.com/(?<urid>.+)", @"http://i.gyazo.com/${urid}.png");
                   return true; }
-            if (SupportedExtentions.Contains(ext))
+            if (SupportedExtentions.Contains(ext)) //その他普通の画像
                 { URL = url;
                   return true; }
-            else
+            else                    //対応してないのでたらい回し
                 { URL = url;
                   return false; }
         }
