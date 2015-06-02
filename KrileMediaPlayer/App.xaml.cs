@@ -38,15 +38,17 @@ namespace KrileMediaPlayer
             string ext = System.IO.Path.GetExtension(url);
 
             if (url.EndsWith(":orig")) //Twitterの原寸画像のsuffix
-                { URL = url; return true; }
+                { URL = url;
+                  return true; }
             if (Regex.IsMatch(url, @"http://gyazo\.com/.+")) //gyazoを画像直リンクしないcunt向け
-                { URL = Regex.Replace(url, @"http://gyazo\.com/(?<urid>.+)", @"http://i.gyazo.com/${urid}.png"); return true; }
+                { URL = Regex.Replace(url, @"http://gyazo\.com/(?<urid>.+)", @"http://i.gyazo.com/${urid}.png");
+                  return true; }
             if (SupportedExtentions.Contains(ext))
-                { URL = url; return true; }
+                { URL = url;
+                  return true; }
             else
-                { URL = url; return false; }
-
+                { URL = url;
+                  return false; }
         }
-
     }
 }
