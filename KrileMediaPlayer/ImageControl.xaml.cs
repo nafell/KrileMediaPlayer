@@ -16,28 +16,13 @@ using System.Windows.Shapes;
 namespace KrileMediaPlayer
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ImageControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ImageControl : UserControl
     {
-        public MainWindow(string startupargs)
+        public ImageControl()
         {
             InitializeComponent();
-
-            this.StartupArgs = startupargs;
-
-            showag();
         }
-
-        private void showag()
-        {
-            this.Title = StartupArgs;
-
-            media.Source = new BitmapImage(new Uri(StartupArgs));
-            
-
-        }
-
-        public string StartupArgs { get; set; }
     }
 }
