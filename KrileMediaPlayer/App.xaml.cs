@@ -46,7 +46,7 @@ namespace KrileMediaPlayer
             if (SupportedExtentions.Contains(ext)) //その他普通の画像
                 { URL = url;
                   return true; }
-            else                    //対応してないのでたらい回し
+            else                    //対応してないのでブラウザにたらい回し
                 { URL = url;
                   return false; }
         }

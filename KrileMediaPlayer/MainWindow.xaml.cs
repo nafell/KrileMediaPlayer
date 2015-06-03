@@ -34,18 +34,26 @@ namespace KrileMediaPlayer
             this.Title = StartupArgs;
 
             media.Source = new BitmapImage(new Uri(StartupArgs));
-            
-
         }
 
         public string StartupArgs { get; set; }
 
-        private void img_MouseDown(object sender, MouseButtonEventArgs e)
+        private void bye(MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
                 Application.Current.Shutdown();
             }
+        }
+
+        private void img_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            bye(e);
+        }
+
+        private void grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            bye(e);
         }
     }
 }
