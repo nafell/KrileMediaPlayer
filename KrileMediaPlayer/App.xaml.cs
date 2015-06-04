@@ -19,7 +19,7 @@ namespace KrileMediaPlayer
 
         private void SummerSunCelebration(object sender, StartupEventArgs e)
         {
-            if (e.Args.Length == 0) Application.Current.Shutdown();
+            if (e.Args.Length == 0) { Application.Current.Shutdown(); return; }
             string URL;
             if (WinterWrapUp(e.Args[0], out URL) == true)
             {
