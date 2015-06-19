@@ -16,6 +16,7 @@ namespace KrileMediaPlayer
     {
         public MainWindow mwindow;
         public string[] SupportedExtentions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
+        public string[] TwiterMediaResolusions = { ":orig", ":large", ":medium", ":small" };
 
         private void SummerSunCelebration(object sender, StartupEventArgs e)
         {
