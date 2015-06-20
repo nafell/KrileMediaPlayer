@@ -32,44 +32,41 @@ namespace KrileMediaPlayer
 
             this.Title = StartupArgs;
 
-            showag();
+            showaw();
         }
 
-        private void showag()
+        private async void showaw()
         {
-
-            
-            FetchImage();
-
+            await Task.Run(() => FetchImage());
         }
 
-        byte[] DLbytedata;
-        private void FetchImage()
+        #region "download"
+        private async void FetchImage()
         {
-            
             WebClient client = new WebClient();
             Uri uri = new Uri(StartupArgs);
-            Console.WriteLine("client");
             client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
             client.DownloadDataCompleted += new DownloadDataCompletedEventHandler(DownloadComplete);
-            client.DownloadDataAsync(uri);
-            Console.WriteLine("Data download started.");
+            await Task.Run(() => client.DownloadDataAsync(uri));
 
         }
 
         private void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
         {
-            // Displays the operation identifier, and the transfer progress.
-            Console.WriteLine("{0}    downloaded {1} of {2} bytes. {3} % complete...",
-                (string)e.UserState,
-                e.BytesReceived,
-                e.TotalBytesToReceive,
-                e.ProgressPercentage);
+            //UI thread Invoker
+            this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate()
+            {
+                this.prgress.Value = e.ProgressPercentage;
+            }));
         }
 
         private void DownloadComplete(object sender, DownloadDataCompletedEventArgs e)
         {
-            media.Source = ByteArrayToBI(e.Result);
+            this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate()
+            {
+                media.Source = ByteArrayToBI(e.Result);
+                prgress.Visibility = Visibility.Hidden;
+            }));
         }
 
         public BitmapImage ByteArrayToBI(byte[] pink)
@@ -84,6 +81,7 @@ namespace KrileMediaPlayer
                 return image;
             }
         }
+        #endregion
 
 
         private void bye(MouseButtonEventArgs e)

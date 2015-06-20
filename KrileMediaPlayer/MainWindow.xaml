@@ -4,5 +4,6 @@
         Title="MainWindow" >
     <Grid Background="#161616" MouseDown="grid_MouseDown">
         <Image Name="media" MouseDown="img_MouseDown" />
+        <ProgressBar x:Name="prgress"  Height="4" Margin="0,496,0,0" VerticalAlignment="Bottom" BorderBrush="#008B8B8B" Background="#00000000" />
     </Grid>
 </Window>
