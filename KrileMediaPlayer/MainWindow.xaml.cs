@@ -20,47 +20,32 @@ namespace KrileMediaPlayer
 
         public string StartupArgs { get; set; }
 
-        public MainWindow(string startupargs)
+        public MainWindow(string StartupArgument)
         {
             InitializeComponent();
+            
+            this.Title = StartupArgument;
 
-            this.StartupArgs = startupargs;
-            this.Title = StartupArgs;
-
-            showaw();
-        }
-
-        private async void showaw()
-        {
-            await Task.Run(() => FetchImage());
+            FetchImage(StartupArgument);
         }
 
         #region "download"
-        private async void FetchImage()
+        private void FetchImage(string URL)
         {
             WebClient client = new WebClient();
-            Uri uri = new Uri(StartupArgs);
-            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
-            client.DownloadDataCompleted += new DownloadDataCompletedEventHandler(DownloadComplete);
-            await Task.Run(() => client.DownloadDataAsync(uri));
-        }
 
-        private void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
-        {
-            //UI thread Invoker
-            this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate()
+            client.DownloadProgressChanged += delegate (object sender, DownloadProgressChangedEventArgs e)
             {
                 this.prgress.Value = e.ProgressPercentage;
-            }));
-        }
+            };
 
-        private void DownloadComplete(object sender, DownloadDataCompletedEventArgs e)
-        {
-            this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate()
+            client.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
             {
                 media.Source = ByteArrayToBI(e.Result);
                 prgress.Visibility = Visibility.Hidden;
-            }));
+            };
+
+            client.DownloadDataAsync(new Uri(URL));
         }
 
         public BitmapImage ByteArrayToBI(byte[] pink)
