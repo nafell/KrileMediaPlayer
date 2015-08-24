@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace KrileMediaPlayer
@@ -18,38 +15,108 @@ namespace KrileMediaPlayer
         public string[] SupportedExtentions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
         public string[] TwiterMediaResolusions = { ":orig", ":large", ":medium", ":small" };
 
-        private void SummerSunCelebration(object sender, StartupEventArgs e)
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Application.Startup"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.StartupEventArgs"/> that contains the event data.</param>
+        protected override void OnStartup(StartupEventArgs e)
         {
-            if (e.Args.Length == 0) { Application.Current.Shutdown(); return; }
-            string URL;
-            if (WinterWrapUp(e.Args[0], out URL) == true)
+            // register single instance app. and check for existence of other process
+            if (!ApplicationInstanceManager.CreateSingleInstance(
+                    Assembly.GetExecutingAssembly().GetName().Name,
+                    SingleInstanceCallback))
+                return; // exit, if same app. is running
+
+            base.OnStartup(e);
+            SummerSunCelebration(e.Args[0]);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Application.Activated"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            var win = MainWindow as MainWindow;
+            if (win == null) return;
+
+            // add 1st args
+            string[] arglines = Environment.GetCommandLineArgs();
+            if (arglines.Length == 0) return;
+            string URL = null;
+            if (WinterWrapUp(arglines[0], ref URL) == true)
             {
-                mwindow = new MainWindow(URL);
-                mwindow.Show();
-            }
-            else
-            {
-                System.Diagnostics.Process.Start(URL);
-                Application.Current.Shutdown();
+                Console.WriteLine($"OnAtv: {URL}");
+                win.ApendArgs(URL);
             }
         }
 
-        private bool WinterWrapUp(string url, out string URL)
+        /// <summary>
+        /// Single instance callback handler.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="SingleInstanceApplication.InstanceCallbackEventArgs"/> instance containing the event data.</param>
+        private void SingleInstanceCallback(object sender, InstanceCallbackEventArgs args)
+        {
+            if (args == null || Dispatcher == null) return;
+            Action<bool> d = (bool x) =>
+            {
+                Console.WriteLine("OnClb!!");
+                var win = MainWindow as MainWindow;
+                if (win == null) return;
+
+                // add 1st args
+                string[] arglines = Environment.GetCommandLineArgs();
+                if (arglines.Length == 0) return;
+                string URL = null;
+                if (WinterWrapUp(arglines[1], ref URL) == true)
+                {
+                    Console.WriteLine($"Clb: {URL}");
+                    win.ApendArgs(URL);
+                    win.Activate(x);
+                }
+                else
+                {
+                    ;
+                }
+
+            };
+            Dispatcher.Invoke(d, true);
+        }
+
+        private void SummerSunCelebration(string url)
+        {
+            string URL = url;
+
+            mwindow = new MainWindow(URL);
+            mwindow.Show();
+        }
+
+        private bool WinterWrapUp(string url, ref string URL)
         {
             string ext = System.IO.Path.GetExtension(url);
-
+            ;
             if (url.EndsWith(":orig")) //Twitterの原寸画像のsuffix
-                { URL = url;
-                  return true; }
+            {
+                URL = url;
+                return true;
+            }
             if (Regex.IsMatch(url, @"http://gyazo\.com/.+")) //gyazoを画像直リンクしないcunt向け
-                { URL = Regex.Replace(url, @"http://gyazo\.com/(?<urid>.+)", @"http://i.gyazo.com/${urid}.png");
-                  return true; }
+            {
+                URL = Regex.Replace(url, @"http://gyazo\.com/(?<urid>.+)", @"http://i.gyazo.com/${urid}.png");
+                return true;
+            }
             if (SupportedExtentions.Contains(ext)) //その他普通の画像
-                { URL = url;
-                  return true; }
+            {
+                URL = url;
+                return true;
+            }
             else                    //対応してないのでブラウザにたらい回し
-                { URL = url;
-                  return false; }
+            {
+                URL = url;
+                return false;
+            }
         }
     }
 }

@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using System.Net;
 
@@ -22,6 +13,11 @@ namespace KrileMediaPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Gets Previouse Window State
+        /// </summary>
+        public WindowState PreviouseWindowState { get; private set; }
+
         public string StartupArgs { get; set; }
 
         public MainWindow(string startupargs)
@@ -29,7 +25,6 @@ namespace KrileMediaPlayer
             InitializeComponent();
 
             this.StartupArgs = startupargs;
-
             this.Title = StartupArgs;
 
             showaw();
@@ -48,7 +43,6 @@ namespace KrileMediaPlayer
             client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
             client.DownloadDataCompleted += new DownloadDataCompletedEventHandler(DownloadComplete);
             await Task.Run(() => client.DownloadDataAsync(uri));
-
         }
 
         private void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
@@ -100,6 +94,41 @@ namespace KrileMediaPlayer
         private void grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             bye(e);
+        }
+        
+        /// <summary>
+        /// Occures on layout change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_LayoutUpdated(object sender, EventArgs e)
+        {
+            PreviouseWindowState = WindowState;
+        }
+
+        /// <summary>
+        /// Activates Window <para/>
+        /// Example for this: http://blogs.microsoft.co.il/blogs/maxim/archive/2009/12/24/daily-tip-how-to-activate-minimized-window-form.aspx
+        /// </summary>
+        /// <param name="restoreIfMinimized">if [true] restore prev. win. state</param>
+        /// <returns></returns>
+        public bool Activate(bool restoreIfMinimized)
+        {
+            if (restoreIfMinimized && WindowState == WindowState.Minimized)
+            {
+                WindowState = PreviouseWindowState == WindowState.Normal
+                                        ? WindowState.Normal : WindowState.Maximized;
+            }
+            return Activate();
+        }
+
+        /// <summary>
+        /// Apends the args.
+        /// </summary>
+        /// <param name="arg">The args.</param>
+        public void ApendArgs(string arg)
+        {
+            Console.WriteLine($"apd: {arg}");
         }
     }
 }
