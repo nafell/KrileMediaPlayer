@@ -41,8 +41,13 @@ namespace KrileMediaPlayer
 
             client.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
             {
-                media.Source = ByteArrayToBI(e.Result);
-                prgress.Visibility = Visibility.Hidden;
+                try
+                {
+                    media.Source = ByteArrayToBI(e.Result);
+                    prgress.Visibility = Visibility.Hidden;
+                }
+                catch
+                { ; }
             };
 
             client.DownloadDataAsync(new Uri(URL));
