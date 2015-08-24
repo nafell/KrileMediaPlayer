@@ -123,10 +123,10 @@ namespace KrileMediaPlayer
         }
 
         /// <summary>
-        /// Apends the args.
+        /// Appends the args.
         /// </summary>
         /// <param name="arg">The args.</param>
-        public void ApendArgs(string arg)
+        public void AppendArgs(string arg)
         {
             Console.WriteLine($"apd: {arg}");
         }

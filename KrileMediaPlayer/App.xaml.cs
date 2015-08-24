@@ -28,7 +28,14 @@ namespace KrileMediaPlayer
                 return; // exit, if same app. is running
 
             base.OnStartup(e);
-            SummerSunCelebration(e.Args[0]);
+            
+            string URL = null;
+            if (WinterWrapUp(e.Args[0], ref URL) == true)
+            {
+                mwindow = new MainWindow(URL);
+                mwindow.Show();
+            }
+
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace KrileMediaPlayer
             if (WinterWrapUp(arglines[0], ref URL) == true)
             {
                 Console.WriteLine($"OnAtv: {URL}");
-                win.ApendArgs(URL);
+                win.AppendArgs(URL);
             }
         }
 
@@ -62,7 +69,6 @@ namespace KrileMediaPlayer
             if (args == null || Dispatcher == null) return;
             Action<bool> d = (bool x) =>
             {
-                Console.WriteLine("OnClb!!");
                 var win = MainWindow as MainWindow;
                 if (win == null) return;
 
@@ -73,24 +79,11 @@ namespace KrileMediaPlayer
                 if (WinterWrapUp(arglines[1], ref URL) == true)
                 {
                     Console.WriteLine($"Clb: {URL}");
-                    win.ApendArgs(URL);
+                    win.AppendArgs(URL);
                     win.Activate(x);
                 }
-                else
-                {
-                    ;
-                }
-
             };
             Dispatcher.Invoke(d, true);
-        }
-
-        private void SummerSunCelebration(string url)
-        {
-            string URL = url;
-
-            mwindow = new MainWindow(URL);
-            mwindow.Show();
         }
 
         private bool WinterWrapUp(string url, ref string URL)
@@ -118,5 +111,7 @@ namespace KrileMediaPlayer
                 return false;
             }
         }
+
+
     }
 }
