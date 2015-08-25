@@ -35,6 +35,11 @@ namespace KrileMediaPlayer
                 mwindow = new MainWindow(URL);
                 mwindow.Show();
             }
+            else
+            {
+                System.Diagnostics.Process.Start(URL);
+                Application.Current.Shutdown();
+            }
 
         }
 
@@ -56,6 +61,11 @@ namespace KrileMediaPlayer
             {
                 Console.WriteLine($"OnAtv: {URL}");
                 win.AppendArgs(URL);
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(URL);
+                Application.Current.Shutdown();
             }
         }
 
@@ -79,6 +89,11 @@ namespace KrileMediaPlayer
                     Console.WriteLine($"Clb: {URL}");
                     win.AppendArgs(URL);
                     win.Activate(x);
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start(URL);
+                    Application.Current.Shutdown();
                 }
             };
             Dispatcher.Invoke(d, true);

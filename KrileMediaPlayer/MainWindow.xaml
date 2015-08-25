@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" >
-    <Grid x:Name="maingrid"  Background="#161616" MouseDown="grid_MouseDown">
-        <TabControl x:Name="Tabs" Background="#00000000" BorderBrush="#00000000">
+    <Grid x:Name="maingrid"  Background="#222222" MouseDown="grid_MouseDown">
+        <TabControl x:Name="Tabs" Background="#161616" BorderBrush="#00000000">
         </TabControl>
     </Grid>
 </Window>

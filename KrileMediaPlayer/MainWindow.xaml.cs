@@ -24,18 +24,23 @@ namespace KrileMediaPlayer
         public MainWindow(string StartupArgument)
         {
             InitializeComponent();
-            
+
             this.Title = StartupArgument;
-            
+
             OpenImage(StartupArgument);
         }
 
         #region "download"
         private void OpenImage(string URL)
         {
-            TabItem newtab = new TabItem();
             ImageTab pagecontent = new ImageTab();
             Tabs.Items.Add(pagecontent);
+            Tabs.SelectedItem = pagecontent;
+            pagecontent.Header = System.IO.Path.GetFileName(URL);
+            if (URL.EndsWith(":orig"))
+            {
+                pagecontent.Header = System.IO.Path.GetFileName(URL.Replace(":orig",""));
+            }
 
             WebClient dlClient = new WebClient();
             var bytes = dlClient.DownloadDataTaskAsync(URL);
