@@ -54,7 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ImageControl.xaml">
+    <Page Include="ImageTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -67,8 +67,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApplicationInstanceManager.cs" />
-    <Compile Include="ImageControl.xaml.cs">
-      <DependentUpon>ImageControl.xaml</DependentUpon>
+    <Compile Include="ImageTab.xaml.cs">
+      <DependentUpon>ImageTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstanceProxy.cs" />
     <Compile Include="MainWindow.xaml.cs">
