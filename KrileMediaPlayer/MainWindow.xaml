@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" >
     <Grid x:Name="maingrid"  Background="#161616" MouseDown="grid_MouseDown">
-        <Image Name="media" MouseDown="img_MouseDown" />
-        <ProgressBar x:Name="prgress"  Height="4" Margin="0,496,0,0" VerticalAlignment="Bottom" BorderBrush="#008B8B8B" Background="#00000000" />
+        <TabControl x:Name="Tabs" Background="#00000000" BorderBrush="#00000000">
+        </TabControl>
     </Grid>
 </Window>

@@ -72,11 +72,9 @@ namespace KrileMediaPlayer
                 var win = MainWindow as MainWindow;
                 if (win == null) return;
 
-                // add 1st args
-                string[] arglines = Environment.GetCommandLineArgs();
-                if (arglines.Length == 0) return;
+                if (args.CommandLineArgs.Length == 0) return;
                 string URL = null;
-                if (WinterWrapUp(arglines[1], ref URL) == true)
+                if (WinterWrapUp(args.CommandLineArgs[1], ref URL) == true)
                 {
                     Console.WriteLine($"Clb: {URL}");
                     win.AppendArgs(URL);
@@ -89,18 +87,17 @@ namespace KrileMediaPlayer
         private bool WinterWrapUp(string url, ref string URL)
         {
             string ext = System.IO.Path.GetExtension(url);
-            ;
             if (url.EndsWith(":orig")) //Twitterの原寸画像のsuffix
             {
                 URL = url;
                 return true;
             }
-            if (Regex.IsMatch(url, @"http://gyazo\.com/.+")) //gyazoを画像直リンクしないcunt向け
+            else if (Regex.IsMatch(url, @"http://gyazo\.com/.+")) //gyazoを画像直リンクしないcunt向け
             {
                 URL = Regex.Replace(url, @"http://gyazo\.com/(?<urid>.+)", @"http://i.gyazo.com/${urid}.png");
                 return true;
             }
-            if (SupportedExtentions.Contains(ext)) //その他普通の画像
+            else if (SupportedExtentions.Contains(ext)) //その他普通の画像
             {
                 URL = url;
                 return true;

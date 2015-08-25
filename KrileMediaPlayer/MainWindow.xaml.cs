@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 using System.Net;
@@ -25,32 +26,36 @@ namespace KrileMediaPlayer
             InitializeComponent();
             
             this.Title = StartupArgument;
-
-            FetchImage(StartupArgument);
+            
+            OpenImage(StartupArgument);
         }
 
         #region "download"
-        private void FetchImage(string URL)
+        private void OpenImage(string URL)
         {
-            WebClient client = new WebClient();
+            TabItem newtab = new TabItem();
+            ImageTab pagecontent = new ImageTab();
+            Tabs.Items.Add(pagecontent);
 
-            client.DownloadProgressChanged += delegate (object sender, DownloadProgressChangedEventArgs e)
+            WebClient dlClient = new WebClient();
+            var bytes = dlClient.DownloadDataTaskAsync(URL);
+
+
+            dlClient.DownloadProgressChanged += delegate (object sender, DownloadProgressChangedEventArgs e)
             {
-                this.prgress.Value = e.ProgressPercentage;
+                pagecontent.Progress.Value = e.ProgressPercentage;
             };
 
-            client.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
+            dlClient.DownloadDataCompleted += delegate (object sender, DownloadDataCompletedEventArgs e)
             {
                 try
                 {
-                    media.Source = ByteArrayToBI(e.Result);
-                    prgress.Visibility = Visibility.Hidden;
+                    pagecontent.Media.Source = ByteArrayToBI(e.Result);
+                    pagecontent.Progress.Visibility = Visibility.Hidden;
                 }
                 catch
-                { ; }
+                {; }
             };
-
-            client.DownloadDataAsync(new Uri(URL));
         }
 
         public BitmapImage ByteArrayToBI(byte[] pink)
@@ -67,12 +72,15 @@ namespace KrileMediaPlayer
         }
         #endregion
 
-
         private void bye(MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
-                Application.Current.Shutdown();
+                if (Tabs.Items.Count == 1)
+                {
+                    Application.Current.Shutdown();
+                }
+                Tabs.Items.Remove(Tabs.SelectedItem);
             }
         }
 
@@ -118,7 +126,7 @@ namespace KrileMediaPlayer
         /// <param name="arg">The args.</param>
         public void AppendArgs(string arg)
         {
-            Console.WriteLine($"apd: {arg}");
+            OpenImage(arg);
         }
     }
 }
