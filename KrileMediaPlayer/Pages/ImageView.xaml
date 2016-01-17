@@ -31,7 +31,7 @@
     <Grid Background="#01000000" MouseDown="UIElement_OnMouseDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="52"/>
+            <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Image Source="{Binding Image}" Grid.Column="0" />
         <ProgressBar Value="{Binding InitialFetchPercentage}" Height="4" VerticalAlignment="Bottom" BorderBrush="#008B8B8B" Background="#00000000" Grid.Column="0">
@@ -48,11 +48,24 @@
         </ProgressBar>
 
         <Border Grid.Column="1" Background="#151515">
-        <StackPanel>
-            <Button Height="50" Command="{Binding CopyUrlCommand, ElementName=ImageViewControl}" CommandParameter="{Binding Url}">
-                <Image Width="36" Source="{StaticResource LinkImageSouce}"></Image>
-            </Button>
-        </StackPanel>
+            <StackPanel>
+                <Button Height="50" Command="{Binding CopyUrlCommand, ElementName=ImageViewControl}" CommandParameter="{Binding Url}">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <TextBlock>Copy Link</TextBlock>
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="36" Source="{StaticResource LinkImageSource}"></Image>
+                </Button>
+                <Button Height="50" Command="{Binding SaveImageCommand}" CommandParameter="{Binding}">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <TextBlock>Save As...</TextBlock>
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="36" Source="{StaticResource DlImageSource}"></Image>
+                </Button>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>

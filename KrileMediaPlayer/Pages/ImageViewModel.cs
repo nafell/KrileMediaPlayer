@@ -1,7 +1,9 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using KrileMediaPlayer.ClassSuplies;
+using System.IO;
+using Microsoft.Win32;
 
 namespace KrileMediaPlayer.Pages
 {
@@ -12,6 +14,7 @@ namespace KrileMediaPlayer.Pages
         private string _title;
         private string _url;
         private bool _isSelected;
+        private ICommand _saveImageCommand;
 
         public int InitialFetchPercentage
         {
@@ -78,6 +81,41 @@ namespace KrileMediaPlayer.Pages
             }
         }
 
+        public ICommand SaveImageCommand
+        {
+            get
+            {
+                return _saveImageCommand ?? (_saveImageCommand = new RelayCommand(
+                    p =>
+                    {
+                        var vm = (ImageViewModel) p;
+                        BitmapEncoder encoder; 
+                        //gif png jpeg jpg
+                        var ext = Path.GetExtension(vm.Title);
+                        if (ext == ".png")
+                            encoder = new PngBitmapEncoder();
+                        if (ext == ".gif")
+                            encoder = new GifBitmapEncoder();
+                        else
+                            encoder = new JpegBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(vm.Image));
+
+                        var dialog = new SaveFileDialog();
+                        dialog.DefaultExt = ext;
+                        dialog.Filter = $"a|*{ext}";
+                        if (dialog.ShowDialog() == true)
+                        {
+                            using (var fileStream = new FileStream(dialog.FileName, FileMode.Create))
+                            {
+                                encoder.Save(fileStream);
+                            }
+                        }
+                    },
+                    p => p is ImageViewModel));
+
+            }
+        }
+
         public ImageViewModel(string url)
         {
             Fetch(url);
@@ -85,8 +123,8 @@ namespace KrileMediaPlayer.Pages
             Url = url;
 
             if (url.EndsWith(":orig"))
-                url = System.IO.Path.GetFileName(url.Replace(":orig", ""));
-            Title = System.IO.Path.GetFileName(url);
+                url = Path.GetFileName(url.Replace(":orig", ""));
+            Title = Path.GetFileName(url);
         }
 
         private async void Fetch(string url)

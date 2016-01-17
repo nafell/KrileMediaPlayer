@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              >
     <Application.Resources>
-         <BitmapImage x:Key="LinkImageSouce" UriSource="Resources/Link.png"></BitmapImage>
+        <BitmapImage x:Key="LinkImageSource" UriSource="Resources/Link.png"></BitmapImage>
+        <BitmapImage x:Key="DlImageSource" UriSource="Resources/Dl.png"></BitmapImage>
     </Application.Resources>
 </Application>
