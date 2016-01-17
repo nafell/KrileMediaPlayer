@@ -10,6 +10,7 @@ namespace KrileMediaPlayer.Pages
         private int _initialFetchPercentage;
         private BitmapImage _image;
         private string _title;
+        private string _url;
         private bool _isSelected;
 
         public int InitialFetchPercentage
@@ -51,6 +52,19 @@ namespace KrileMediaPlayer.Pages
             }
         }
 
+        public string Url
+        {
+            get { return _url; }
+            set
+            {
+                if (value == _url)
+                    return;
+
+                _url = value;
+                OnPropertyChanged(nameof(Url));
+            }
+        }
+
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -67,6 +81,8 @@ namespace KrileMediaPlayer.Pages
         public ImageViewModel(string url)
         {
             Fetch(url);
+
+            Url = url;
 
             if (url.EndsWith(":orig"))
                 url = System.IO.Path.GetFileName(url.Replace(":orig", ""));

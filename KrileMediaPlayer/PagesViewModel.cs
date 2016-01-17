@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -15,6 +16,7 @@ namespace KrileMediaPlayer
         private ICommand _changePageCommand;
 
         private ICommand _closeCommand;
+        private ICommand _copyUrlCommand;
 
         public ICommand ChangePageCommand
         {
@@ -25,6 +27,19 @@ namespace KrileMediaPlayer
                                                 p => ChangePage((IPageViewModel) p),
                                                 p => p is IPageViewModel);
             }
+        }
+        private void ChangePage(IPageViewModel viewmodel)
+        {
+            if (!Pages.Contains(viewmodel))
+                Pages.Add(viewmodel);
+
+            for (var i = 0; i <= Pages.Count - 1; i++)
+            {
+                Pages[i].IsSelected = false;
+            }
+
+            CurrentPageViewModel = Pages.FirstOrDefault(vm => vm == viewmodel);
+            Pages[Pages.IndexOf(viewmodel)].IsSelected = true;
         }
 
         public ObservableCollection<IPageViewModel> Pages
@@ -76,21 +91,6 @@ namespace KrileMediaPlayer
                                            p => p is IPageViewModel);
             }
         }
-
-        private void ChangePage(IPageViewModel viewmodel)
-        {
-            if(!Pages.Contains(viewmodel))
-                Pages.Add(viewmodel);
-
-            for (var i = 0; i <= Pages.Count - 1; i++)
-            {
-                Pages[i].IsSelected = false;
-            }
-
-            CurrentPageViewModel = Pages.FirstOrDefault(vm => vm == viewmodel);
-            Pages[Pages.IndexOf(viewmodel)].IsSelected = true;
-        }
-
         private void ClosePage(IPageViewModel viewmodel)
         {
             Pages.Remove(viewmodel);
@@ -100,6 +100,22 @@ namespace KrileMediaPlayer
                 return;
             }
             ChangePage(Pages[Pages.Count - 1]);
+        }
+
+        public ICommand CopyUrlCommand
+        {
+            get
+            {
+                return _copyUrlCommand = _copyUrlCommand ??
+                                         new RelayCommand(
+                                             p => CopyUrl((string) p),
+                                             p => p is string);
+            }
+        }
+        private void CopyUrl(string url)
+        {
+            Console.WriteLine(url);
+            Clipboard.SetText(url);
         }
     }
 }

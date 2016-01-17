@@ -17,6 +17,15 @@ namespace KrileMediaPlayer.Pages
             set { SetValue(CloseCommandProperty, value); }
         }
 
+        public static readonly DependencyProperty CopyUrlCommandProperty = DependencyProperty.Register(
+            "CopyUrlCommand", typeof (ICommand), typeof (ImageView), new PropertyMetadata(default(ICommand)));
+
+        public ICommand CopyUrlCommand
+        {
+            get { return (ICommand) GetValue(CopyUrlCommandProperty); }
+            set { SetValue(CopyUrlCommandProperty, value); }
+        }
+
         public ImageView()
         {
             InitializeComponent();

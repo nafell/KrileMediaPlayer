@@ -8,7 +8,8 @@
         >
     <Window.Resources>
         <DataTemplate DataType="{x:Type pages:ImageViewModel}">
-            <pages:ImageView CloseCommand="{Binding DataContext.CloseCommand, ElementName=MainWindowView}"></pages:ImageView>
+            <pages:ImageView CloseCommand="{Binding DataContext.CloseCommand, ElementName=MainWindowView}"
+                             CopyUrlCommand="{Binding DataContext.CopyUrlCommand, ElementName=MainWindowView}"></pages:ImageView>
         </DataTemplate>
     </Window.Resources>
     
