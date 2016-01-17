@@ -4,7 +4,7 @@
         xmlns:pages="clr-namespace:KrileMediaPlayer.Pages"
         Title="{Binding CurrentPageViewModel.Title}"
         LayoutUpdated="Window_LayoutUpdated"
-        x:Name="MainWindowView"
+        x:Name="MainWindowView" Icon="Resources/favicon.ico"
         >
     <Window.Resources>
         <DataTemplate DataType="{x:Type pages:ImageViewModel}">
