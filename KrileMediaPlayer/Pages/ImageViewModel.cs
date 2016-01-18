@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using KrileMediaPlayer.ClassSuplies;
@@ -13,6 +14,7 @@ namespace KrileMediaPlayer.Pages
         private BitmapImage _image;
         private string _title;
         private string _url;
+        private string _statusError;
         private bool _isSelected;
         private ICommand _saveImageCommand;
 
@@ -68,6 +70,19 @@ namespace KrileMediaPlayer.Pages
             }
         }
 
+        public string StatusError
+        {
+            get { return _statusError; }
+            set
+            {
+                if (value == _statusError)
+                    return;
+
+                _statusError = value;
+                OnPropertyChanged(nameof(StatusError));
+            }
+        }
+
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -89,12 +104,11 @@ namespace KrileMediaPlayer.Pages
                     p =>
                     {
                         var vm = (ImageViewModel) p;
-                        BitmapEncoder encoder; 
-                        //gif png jpeg jpg
+                        BitmapEncoder encoder;
                         var ext = Path.GetExtension(vm.Title);
                         if (ext == ".png")
                             encoder = new PngBitmapEncoder();
-                        if (ext == ".gif")
+                        else if (ext == ".gif")
                             encoder = new GifBitmapEncoder();
                         else
                             encoder = new JpegBitmapEncoder();
@@ -136,8 +150,21 @@ namespace KrileMediaPlayer.Pages
                 InitialFetchPercentage = e.ProgressPercentage;
             };
 
-            var resp = await client.DownloadDataTaskAsync(url);
-            Image = ByteArrayToBitmapImage(resp);
+            try
+            {
+                var resp = await client.DownloadDataTaskAsync(url);
+                Image = ByteArrayToBitmapImage(resp);
+            }
+            catch (WebException ex)
+                when (ex.Response is HttpWebResponse)
+            {
+                StatusError = $"{(int) ((HttpWebResponse) ex.Response).StatusCode} {((HttpWebResponse) ex.Response).StatusDescription}";
+            }
+            catch (Exception ex)
+            {
+                StatusError = ex.ToString();
+            }
+
         }
 
         private static BitmapImage ByteArrayToBitmapImage(byte[] pink)

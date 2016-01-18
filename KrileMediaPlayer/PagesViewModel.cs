@@ -114,7 +114,6 @@ namespace KrileMediaPlayer
         }
         private void CopyUrl(string url)
         {
-            Console.WriteLine(url);
             Clipboard.SetText(url);
         }
     }

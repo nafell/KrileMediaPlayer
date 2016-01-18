@@ -46,6 +46,7 @@
                 </Style>
             </ProgressBar.Style>
         </ProgressBar>
+        <TextBlock Text="{Binding StatusError}" Foreground="#e84c3d" FontSize="36" TextAlignment="Center" VerticalAlignment="center" Grid.Column="0"></TextBlock>
 
         <Border Grid.Column="1" Background="#151515">
             <StackPanel>
