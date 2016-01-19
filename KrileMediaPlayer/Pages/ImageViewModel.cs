@@ -115,8 +115,9 @@ namespace KrileMediaPlayer.Pages
                         encoder.Frames.Add(BitmapFrame.Create(vm.Image));
 
                         var dialog = new SaveFileDialog();
+                        dialog.FileName = vm.Title;
                         dialog.DefaultExt = ext;
-                        dialog.Filter = $"a|*{ext}";
+                        dialog.Filter = $"|*{ext}";
                         if (dialog.ShowDialog() == true)
                         {
                             using (var fileStream = new FileStream(dialog.FileName, FileMode.Create))
@@ -169,7 +170,7 @@ namespace KrileMediaPlayer.Pages
 
         private static BitmapImage ByteArrayToBitmapImage(byte[] pink)
         {
-            using (var ms = new System.IO.MemoryStream(pink))
+            using (var ms = new MemoryStream(pink))
             {
                 var image = new BitmapImage();
                 image.BeginInit();
