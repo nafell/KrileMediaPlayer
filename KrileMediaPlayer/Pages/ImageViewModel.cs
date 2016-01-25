@@ -144,28 +144,21 @@ namespace KrileMediaPlayer.Pages
 
         private async void Fetch(string url)
         {
-            var client = new WebClient();
-
-            client.DownloadProgressChanged += delegate (object sender, DownloadProgressChangedEventArgs e)
-            {
-                InitialFetchPercentage = e.ProgressPercentage;
-            };
-
             try
             {
-                var resp = await client.DownloadDataTaskAsync(url);
+                var fetcher = new MediaRequestor();
+                var resp = await fetcher.FetchAsyncWithProgressCallBack(url, p => { InitialFetchPercentage = p; });
                 Image = ByteArrayToBitmapImage(resp);
             }
             catch (WebException ex)
                 when (ex.Response is HttpWebResponse)
             {
-                StatusError = $"{(int) ((HttpWebResponse) ex.Response).StatusCode} {((HttpWebResponse) ex.Response).StatusDescription}";
+                StatusError = $"{(int)((HttpWebResponse)ex.Response).StatusCode} {((HttpWebResponse)ex.Response).StatusDescription}";
             }
             catch (Exception ex)
             {
                 StatusError = ex.ToString();
             }
-
         }
 
         private static BitmapImage ByteArrayToBitmapImage(byte[] pink)
