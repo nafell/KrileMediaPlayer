@@ -10,6 +10,8 @@ namespace KrileMediaPlayer
 {
     public class PagesViewModel :ObservableObject
     {
+        #region fields
+
         private IPageViewModel _currentPageViewModel;
         private ObservableCollection<IPageViewModel> _pages;
 
@@ -18,28 +20,30 @@ namespace KrileMediaPlayer
         private ICommand _closeCommand;
         private ICommand _copyUrlCommand;
 
+        #endregion
+
         public ICommand ChangePageCommand
         {
             get
             {
                 return _changePageCommand = _changePageCommand ??
                                             new RelayCommand(
-                                                p => ChangePage((IPageViewModel) p),
+                                                p =>
+                                                {
+                                                    var viewmodel = (IPageViewModel) p; 
+                                                    if (!Pages.Contains(viewmodel))
+                                                        Pages.Add(viewmodel);
+
+                                                    for (var i = 0; i <= Pages.Count - 1; i++)
+                                                    {
+                                                        Pages[i].IsSelected = false;
+                                                    }
+
+                                                    CurrentPageViewModel = Pages.FirstOrDefault(vm => vm == viewmodel);
+                                                    Pages[Pages.IndexOf(viewmodel)].IsSelected = true;
+                                                },
                                                 p => p is IPageViewModel);
             }
-        }
-        private void ChangePage(IPageViewModel viewmodel)
-        {
-            if (!Pages.Contains(viewmodel))
-                Pages.Add(viewmodel);
-
-            for (var i = 0; i <= Pages.Count - 1; i++)
-            {
-                Pages[i].IsSelected = false;
-            }
-
-            CurrentPageViewModel = Pages.FirstOrDefault(vm => vm == viewmodel);
-            Pages[Pages.IndexOf(viewmodel)].IsSelected = true;
         }
 
         public ObservableCollection<IPageViewModel> Pages
@@ -65,7 +69,7 @@ namespace KrileMediaPlayer
         {
             var newViewModel = new ImageViewModel(url);
             Pages.Add(newViewModel);
-            ChangePage(newViewModel);
+            ChangePageCommand.Execute(newViewModel);
         }
 
         public IPageViewModel CurrentPageViewModel
@@ -87,19 +91,18 @@ namespace KrileMediaPlayer
             {
                 return _closeCommand = _closeCommand ??
                                        new RelayCommand(
-                                           p => ClosePage((IPageViewModel) p),
+                                           p =>
+                                           {
+                                               Pages.Remove((IPageViewModel)p);
+                                               if (Pages.Count == 0)
+                                               {
+                                                   Application.Current.Shutdown();
+                                                   return;
+                                               }
+                                               ChangePageCommand.Execute(Pages[Pages.Count - 1]);
+                                           },
                                            p => p is IPageViewModel);
             }
-        }
-        private void ClosePage(IPageViewModel viewmodel)
-        {
-            Pages.Remove(viewmodel);
-            if (Pages.Count == 0)
-            {
-                Application.Current.Shutdown();
-                return;
-            }
-            ChangePage(Pages[Pages.Count - 1]);
         }
 
         public ICommand CopyUrlCommand
@@ -108,13 +111,9 @@ namespace KrileMediaPlayer
             {
                 return _copyUrlCommand = _copyUrlCommand ??
                                          new RelayCommand(
-                                             p => CopyUrl((string) p),
+                                             p => Clipboard.SetText((string) p),
                                              p => p is string);
             }
-        }
-        private void CopyUrl(string url)
-        {
-            Clipboard.SetText(url);
         }
     }
 }
