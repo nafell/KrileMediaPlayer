@@ -10,6 +10,8 @@ namespace KrileMediaPlayer.Pages
 {
     public class ImageViewModel : ObservableObject, IPageViewModel
     {
+        #region fields
+
         private int _initialFetchPercentage;
         private BitmapImage _image;
         private string _title;
@@ -17,6 +19,10 @@ namespace KrileMediaPlayer.Pages
         private string _statusError;
         private bool _isSelected;
         private ICommand _saveImageCommand;
+
+        #endregion
+
+        #region property accessors
 
         public int InitialFetchPercentage
         {
@@ -130,6 +136,8 @@ namespace KrileMediaPlayer.Pages
 
             }
         }
+
+        #endregion
 
         public ImageViewModel(string url)
         {

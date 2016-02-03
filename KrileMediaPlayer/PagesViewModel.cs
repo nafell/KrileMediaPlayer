@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using KrileMediaPlayer.ClassSuplies;
@@ -34,13 +32,13 @@ namespace KrileMediaPlayer
                                                     if (!Pages.Contains(viewmodel))
                                                         Pages.Add(viewmodel);
 
-                                                    for (var i = 0; i <= Pages.Count - 1; i++)
+                                                    foreach (IPageViewModel pg in Pages)
                                                     {
-                                                        Pages[i].IsSelected = false;
+                                                        pg.IsSelected = false;
                                                     }
-
-                                                    CurrentPageViewModel = Pages.FirstOrDefault(vm => vm == viewmodel);
-                                                    Pages[Pages.IndexOf(viewmodel)].IsSelected = true;
+                                                    
+                                                    CurrentPageViewModel = Pages[Pages.IndexOf(viewmodel)];
+                                                    CurrentPageViewModel.IsSelected = true;
                                                 },
                                                 p => p is IPageViewModel);
             }
@@ -50,10 +48,7 @@ namespace KrileMediaPlayer
         {
             get
             {
-                if(_pages == null)
-                    _pages = new ObservableCollection<IPageViewModel>();
-
-                return _pages;
+                return _pages = _pages ?? new ObservableCollection<IPageViewModel>();
             }
             set
             {
