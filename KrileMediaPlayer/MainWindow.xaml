@@ -5,6 +5,14 @@
         Title="{Binding CurrentPageViewModel.Title}"
         LayoutUpdated="Window_LayoutUpdated"
         x:Name="MainWindowView" Icon="Resources/favicon.ico"
+        
+        WindowState="{Binding Pages.Config.Model.MainWindowConfig.MainWindowState, Mode=TwoWay, RelativeSource={RelativeSource Self}}"
+        Width="{Binding Pages.Config.Model.MainWindowConfig.MainWindowWidth, Mode=TwoWay, RelativeSource={RelativeSource Self}}"
+        Height="{Binding Pages.Config.Model.MainWindowConfig.MainWindowHeight, Mode=TwoWay, RelativeSource={RelativeSource Self}}"
+        Top="{Binding Pages.Config.Model.MainWindowConfig.MainWindowTop, Mode=TwoWay, RelativeSource={RelativeSource Self}}"
+        Left="{Binding Pages.Config.Model.MainWindowConfig.MainWindowLeft, Mode=TwoWay, RelativeSource={RelativeSource Self}}"
+        
+        Closing="MainWindow_OnClosing"
         >
     <Window.Resources>
         <DataTemplate DataType="{x:Type pages:ImageViewModel}">

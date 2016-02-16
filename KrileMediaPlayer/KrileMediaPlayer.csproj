@@ -70,6 +70,10 @@
     <Compile Include="ApplicationInstanceManager.cs" />
     <Compile Include="ClassSuplies\ObservableObject.cs" />
     <Compile Include="ClassSuplies\RelayCommand.cs" />
+    <Compile Include="ClassSuplies\XmlSerializer.cs" />
+    <Compile Include="Config\ConfigModel.cs" />
+    <Compile Include="Config\ConfigViewModel.cs" />
+    <Compile Include="Config\MainWindowConfigModel.cs" />
     <Compile Include="InstanceProxy.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace KrileMediaPlayer
@@ -56,6 +57,11 @@ namespace KrileMediaPlayer
         public void AppendArgs(string arg)
         {
             Pages.OpenImage(arg);
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            Pages.Config.SaveConfig();
         }
     }
 }

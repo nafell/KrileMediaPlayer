@@ -2,16 +2,18 @@
 using System.Windows;
 using System.Windows.Input;
 using KrileMediaPlayer.ClassSuplies;
+using KrileMediaPlayer.Config;
 using KrileMediaPlayer.Pages;
 
 namespace KrileMediaPlayer
 {
-    public class PagesViewModel :ObservableObject
+    public class PagesViewModel : ObservableObject
     {
         #region fields
 
         private IPageViewModel _currentPageViewModel;
         private ObservableCollection<IPageViewModel> _pages;
+        private ConfigViewModel _config;
 
         private ICommand _changePageCommand;
 
@@ -57,6 +59,19 @@ namespace KrileMediaPlayer
 
                 _pages = value;
                 OnPropertyChanged(nameof(Pages));
+            }
+        }
+
+        public ConfigViewModel Config
+        {
+            get { return _config = _config ?? new ConfigViewModel(); }
+            set
+            {
+                if (value == _config)
+                    return;
+
+                _config = value;
+                OnPropertyChanged(nameof(Config));
             }
         }
 
