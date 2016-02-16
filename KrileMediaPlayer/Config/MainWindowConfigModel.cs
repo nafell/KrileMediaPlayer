@@ -7,10 +7,10 @@ namespace KrileMediaPlayer.Config
     {
         #region fields
 
-        private double _mainWindowTop;
-        private double _mainWindowLeft;
-        private double _mainWindowWidth;
-        private double _mainWindowHeight;
+        private double _mainWindowTop = 50;
+        private double _mainWindowLeft = 50;
+        private double _mainWindowWidth = 1280;
+        private double _mainWindowHeight = 720;
         private WindowState _mainWindowState;
 
         #endregion
